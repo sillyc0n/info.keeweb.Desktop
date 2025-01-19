@@ -1,0 +1,69 @@
+app-id: info.keeweb.desktop
+runtime: org.freedesktop.Platform
+runtime-version: '24.08'
+sdk: org.freedesktop.Sdk
+base: org.electronjs.Electron2.BaseApp
+base-version: '24.08'
+command: keeweb
+finish-args:
+  - --share=ipc
+  - --share=network
+  - --socket=x11
+  - --device=dri
+  - --env=XDG_CURRENT_DESKTOP=Unity
+  - --env=XCURSOR_PATH=/run/host/user-share/icons:/run/host/share/icons
+  - --talk-name=org.kde.StatusNotifierWatcher
+  - --talk-name=org.freedesktop.Notifications
+  - --talk-name=org.freedesktop.secrets
+  - --talk-name=com.canonical.AppMenu.Registrar
+  - --system-talk-name=org.freedesktop.PolicyKit1
+    # Lock on lockscreen
+  - --talk-name=org.gnome.ScreenSaver
+  - --talk-name=org.freedesktop.ScreenSaver
+  - --system-talk-name=org.freedesktop.login
+  - --filesystem=xdg-download
+rename-desktop-file: keeweb.desktop
+rename-icon: keeweb
+modules:
+  - name: keeweb-desktop
+    buildsystem: simple
+    build-commands:
+      - ar -x KeeWeb*.deb
+      - rm -f KeeWeb*.deb
+      - tar -xzf data.tar.gz
+      - rm -f control.tar.gz data.tar.gz debian-binary
+      - mkdir -p $FLATPAK_DEST/share/icons/hicolor/512x512/apps    
+      - cp -r usr/* $FLATPAK_DEST
+      - rm -rf usr
+      - install keeweb.sh $FLATPAK_DEST/bin/keeweb
+      - install -D -m 644 -t $FLATPAK_DEST/share/metainfo $FLATPAK_ID.metainfo.xml
+      - desktop-file-edit --set-key=Exec --set-value="keeweb %U" $FLATPAK_DEST/share/applications/keeweb.desktop
+
+      # To allow separate locales
+      # https://searchfox.org/mozilla-central/rev/8a4f55bc09ffc5c25dcb4586c51ae4a9fee77b4c/taskcluster/docker/firefox-flatpak/runme.sh#131-133
+      #- |
+      #  for lang in ${FLATPAK_DEST}/Bitwarden/locales/*.pak
+      #  do
+      #    locale="$(basename -s .pak $lang)"
+      #    install -Dm644 -t "${FLATPAK_DEST}/share/runtime/locale/${locale%%-*}/" "$lang"
+      #    ln -sf "${FLATPAK_DEST}/share/runtime/locale/${locale%%-*}/$(basename $lang)" "${FLATPAK_DEST}/Bitwarden/locales/$(basename $lang)"
+      #  done
+    sources:
+      - type: file
+        only-arches:
+          - x86_64
+        url: https://github.com/keeweb/keeweb/releases/download/v1.18.7/KeeWeb-1.18.7.linux.x64.deb
+        sha256: fd4faf9f94cb214f7f27a711163b807721b39700b4e26a782f65f6113a7e6521
+        x-checker-data:
+          type: anitya
+          project-id: 376490
+          url-template: https://github.com/keeweb/keeweb/releases/download/v$version/KeeWeb-$version.linux.x64.deb
+          is-main-source: true    
+      - type: script
+        dest-filename: keeweb.sh
+        commands:
+          - export TMPDIR="$XDG_RUNTIME_DIR/app/$FLATPAK_ID"
+          - ulimit -c 0
+          - exec zypak-wrapper /app/share/keeweb-desktop/keeweb "$@"
+      - type: file
+        path: info.keeweb.desktop.metainfo.xml

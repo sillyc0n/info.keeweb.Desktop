@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2018-2020 Flathub maintainers -->
+<component type="desktop">
+  <id>info.keeweb.desktop</id>
+  <launchable type="desktop-id">info.keeweb.desktop.desktop</launchable>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0</project_license>
+  <name>KeeWeb</name>
+  <summary>A secure and free password manager for all of your devices</summary>
+  <description>
+    <p>
+      KeeWeb is a password manager which supports managing kdbx files created 
+      by other applications such as KeePass, KeePassXC, etc. You choose the 
+      platform you wish to run; as KeeWeb supports being installed and ran as 
+      either a Desktop application, or in your web-browser.
+    </p>
+    <p>
+      With support for Linux, Windows, and MacOS, we give you the tools to 
+      seamlessly manage your most important credentials across multiple 
+      applications and platforms.
+    </p>
+    <p>
+      Decide how you want to save your credential vault, KeeWeb supports 
+      saving your database as a local file, or you can store your password 
+      vault with some of the most popular cloud services such as Dropbox, 
+      Google Drive, and Microsoft OneDrive.
+    </p>    
+  </description>
+  <categories>
+    <category>Utility</category>
+  </categories>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/keeweb/keeweb/refs/heads/master/img/screenshot.png</image>
+      <caption>Keeweb interface</caption>
+    </screenshot>
+  </screenshots>
+  <url type="homepage">https://keeweb.info/</url>
+  <url type="bugtracker">https://github.com/keeweb/keeweb/issues</url>
+  <url type="help">https://github.com/keeweb/keeweb/wiki</url>
+  <developer_name>KeeWeb</developer_name>
+  <update_contact>https://twitter.com/kee_web</update_contact>
+</component>
