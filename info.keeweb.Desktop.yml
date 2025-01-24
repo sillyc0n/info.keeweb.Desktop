@@ -1,4 +1,4 @@
-app-id: info.keeweb.desktop
+app-id: info.keeweb.Desktop
 runtime: org.freedesktop.Platform
 runtime-version: '24.08'
 sdk: org.freedesktop.Sdk
@@ -66,4 +66,4 @@ modules:
           - ulimit -c 0
           - exec zypak-wrapper /app/share/keeweb-desktop/keeweb "$@"
       - type: file
-        path: info.keeweb.desktop.metainfo.xml
+        path: info.keeweb.Desktop.metainfo.xml
